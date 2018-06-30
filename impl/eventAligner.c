@@ -21,6 +21,7 @@
 #include "eventAligner.h"
 #include "stateMachine.h"
 #include "nanopore.h"
+#include "hdf5.h"
 
 #define RAW_ROOT "/Raw/Reads/"
 //#define DEBUG_FAST5_IO 1

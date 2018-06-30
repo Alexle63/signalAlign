@@ -22,3 +22,5 @@ hdf5-1.8.14/
 include
 lib
 share
+hdf5-1.10.2/
+CMake-hdf5-1.10.2.tar.gz

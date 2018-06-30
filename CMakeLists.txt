@@ -50,14 +50,23 @@ link_directories(/usr/include/)
 #add_subdirectory(signalAlign
 #        BUILD_COMMAND make)
 
+#include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/inc)
 include_directories(${CMAKE_SOURCE_DIR}/sonLib/C/inc/)
 include_directories(${CMAKE_SOURCE_DIR}/sonLib/C/impl/)
 include_directories(/usr/local/lib)
 include_directories(${CMAKE_SOURCE_DIR}/sonLib/externalTools/cutest/)
 include_directories(${CMAKE_SOURCE_DIR}/sonLib/externalTools/quicktree_1.1/include)
+#include_directories(${CMAKE_SOURCE_DIR}/hdf5-1.8.14/src)
+include_directories(${CMAKE_SOURCE_DIR}/hdf5-1.10.2/src)
 include_directories(/usr/include/)
 include_directories(/System/Library/Frameworks/Python.framework/Headers)
+
+#include(${CMAKE_CURRENT_SOURCE_DIR}/hdf5-1.8.14/src/CMakeLists.txt)
+#include(/tmp/hdf5/CMake-hdf5-1.10.2/hdf5-1.10.2/CMakeLists.txt)
+set (HDF5_EXTERNALLY_CONFIGURED 1)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/hdf5-1.10.2/)
+
 
 set(estimateNanoporeParams estimateNanoporeParams.c)
 
@@ -68,6 +77,7 @@ set(SOURCE_FILES
         impl/nanopore.c
         impl/continuousHmm.c
         impl/discreteHmm.c
+#        impl/eventAligner.c
         impl/hdp.c
         impl/hdp_math_utils.c
         impl/multipleAligner.c
@@ -78,9 +88,10 @@ set(SOURCE_FILES
         impl/rnglib.c
         impl/signalMachineUtils.c
         impl/fasta_handler.c
-        impl/banded_alignment.c
         impl/
-        /Users/andrewbailey/CLionProjects/nanopore-RNN/submodules/signalAlign/tests/allTests.c)
+#        impl/banded_alignment.c
+#        /Users/andrewbailey/CLionProjects/nanopore-RNN/submodules/signalAlign/tests/allTests.c
+        )
 
 set(SIGNAL_MACHINE signalMachine.c)
 set(DEBUGGING debugging.c)
@@ -126,15 +137,23 @@ target_link_libraries(signalMachine -lpthread -lrt -lm -L${CMAKE_CURRENT_SOURCE_
 add_dependencies(signalMachine signalAlign)
 
 
+#add_executable(debugging ${SOURCE_FILES} ${DEBUGGING})
+#target_link_libraries(debugging)
+#target_link_libraries(debugging -L${CMAKE_CURRENT_SOURCE_DIR}/htslib hts ${CMAKE_CURRENT_SOURCE_DIR}/htslib/libhts.a
+#        ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/sonLib.a
+#
+#        ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/cuTest.a)
+#add_dependencies(debugging signalAlign)
 
-add_executable(debugging ${SOURCE_FILES} ${DEBUGGING})
-target_link_libraries(debugging)
-target_link_libraries(debugging -L${CMAKE_CURRENT_SOURCE_DIR}/htslib hts ${CMAKE_CURRENT_SOURCE_DIR}/htslib/libhts.a
+add_executable(kmerEventAlign ${SOURCE_FILES} impl/eventAligner.c ${common_SRCS} kmerEventAlign.c)
+target_link_libraries(kmerEventAlign -lpthread -lrt -lm -L${CMAKE_CURRENT_SOURCE_DIR}/htslib hts hdf5-static
         ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/sonLib.a
-
-        ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/cuTest.a)
-add_dependencies(debugging signalAlign)
-
+        ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/signalAlignLib.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/cuTest.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/htslib/libhts.a
+        -lz
+        )
+add_dependencies(kmerEventAlign signalAlign)
 
 
 #        signalAlign/sonLib/C/impl/pairwiseAlignment.c

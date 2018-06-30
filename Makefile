@@ -40,9 +40,9 @@ python-utils :
 
 
 ${rootPath}/lib/libhdf5.a:
-	if [ ! -e hdf5-1.8.14.tar.gz ]; then wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.14/src/hdf5-1.8.14.tar.gz; fi
-	tar -xzf hdf5-1.8.14.tar.gz || exit 255
-	cd hdf5-1.8.14 && ./configure --enable-threadsafe --prefix=`pwd`/.. && make && make install
+	if [ ! -e CMake-hdf5-1.10.2.tar.gz ]; then wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.2/src/CMake-hdf5-1.10.2.tar.gz; fi
+	tar -xzf CMake-hdf5-1.10.2.tar.gz || exit 255
+	mv CMake-hdf5-1.10.2/hdf5-1.10.2 . && rm -r CMake-hdf5-1.10.2 && cd hdf5-1.10.2 && ./configure  --disable-hl --enable-threadsafe --prefix=`pwd`/.. && make && make install
 
 
 ${scrappie_build}/scrappie :
