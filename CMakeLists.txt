@@ -146,7 +146,7 @@ add_dependencies(signalMachine signalAlign)
 #add_dependencies(debugging signalAlign)
 
 add_executable(kmerEventAlign ${SOURCE_FILES} impl/eventAligner.c ${common_SRCS} kmerEventAlign.c)
-target_link_libraries(kmerEventAlign -lpthread -lrt -lm -L${CMAKE_CURRENT_SOURCE_DIR}/htslib hts hdf5-static
+target_link_libraries(kmerEventAlign -lz -lpthread -lrt -lm -L${CMAKE_CURRENT_SOURCE_DIR}/htslib hts hdf5-static
         ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/sonLib.a
         ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/signalAlignLib.a
         ${CMAKE_CURRENT_SOURCE_DIR}/sonLib/lib/cuTest.a
