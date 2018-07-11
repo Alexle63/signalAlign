@@ -60,3 +60,8 @@ print(y_coords)
 for x in x_coords:
     y_coords.append(len(my_data[x]))
 print(y_coords)
+
+PLACE_COUNTER = range(len(y_coords))
+plt.bar(PLACE_COUNTER, y_coords)
+plt.xticks(PLACE_COUNTER, x_coords)
+plt.show()
