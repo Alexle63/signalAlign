@@ -63,10 +63,7 @@ def main():
        INDEX = 1
    if pos == "event":
        INDEX = 5
-   CHROMOSOME_POSITION_COUNTER = 0
-   PRINT_COUNTER = 0
    pertick = int(rang / 100)
-   value_counter = 0
    counter = 0
    counter3 = startpos
    maxima = rang + counter3
