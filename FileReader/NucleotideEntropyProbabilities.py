@@ -77,7 +77,7 @@ def main():
     nucleocounter = 0
     pertick = int(rang / 100)
     counter = 0
-    counter3 = startpos
+    counter3 = 0
     maxima = rang + counter3
     BOT_START = 0
     BOT_END = rang
