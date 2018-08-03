@@ -169,7 +169,7 @@ def main():
     harmonicmean(startpos, 0, 0, 0, 0, 0, 0)
     huffmanentropy(0, 0, 0)
     printcalculations(pertick, 0)
-    #printplot(BOT_START, BOT_END, pertick, opath)
+    printplot(BOT_START, BOT_END, pertick, opath)
     for printtrack in range(len(x_coords)):
         print("%-10d \t %-10f \t %-10f \t %-10f \t %-10f \t %-10f \t" % (x_coords[printtrack], hentropy[printtrack], Alist[printtrack], Clist[printtrack], Glist[printtrack], Tlist[printtrack]))
 
