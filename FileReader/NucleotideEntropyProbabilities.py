@@ -91,7 +91,7 @@ def main():
         for line in my_file:
             line = line.split("\t")
             index = int(line[INDEX])
-            NUCLEOTIDES.append(line[9])
+            NUCLEOTIDES.append(line[15])
             if index not in my_data:
                 my_data[index] = list()
                 my_data2[index] = list()
