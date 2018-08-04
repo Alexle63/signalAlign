@@ -81,6 +81,9 @@ def main():
     maxima = rang + counter3
     BOT_START = 0
     BOT_END = rang
+    sub_string = 0
+    marker_index = 0
+    sub_counter = 0
     my_data = dict()
     my_data2 = dict()
     my_data3 = dict()
@@ -91,7 +94,8 @@ def main():
         for line in my_file:
             line = line.split("\t")
             index = int(line[INDEX])
-            NUCLEOTIDES.append(line[15])
+            sub_string = len(line[15])-1
+            NUCLEOTIDES.append(line[15][:sub_string])
             if index not in my_data:
                 my_data[index] = list()
                 my_data2[index] = list()
@@ -115,22 +119,30 @@ def main():
         if endvalue < len(NUCLEOTIDES[a]):
             limit = len(NUCLEOTIDES[a]) - endvalue
             while counter < len(NUCLEOTIDES[a]) - limit:
-                my_data2[x_coords[a + counter]].append(my_data4[x_coords[a]])
+                while sub_counter < len(my_data4[x_coords[a]]):
+                    marker_index = my_data4[x_coords[a]][sub_counter].index('-')
+                    my_data2[x_coords[a + counter]].append(str(my_data4[x_coords[a]][sub_counter][:marker_index] + "-" + my_data4[x_coords[a]][sub_counter][counter+1+marker_index:]))
+                    sub_counter+=1
+                sub_counter = 0
                 counter += 1
         else:
             while counter < len(NUCLEOTIDES[a]):
-                my_data2[x_coords[a + counter]].append(my_data4[x_coords[a]])
+                while sub_counter < len(my_data4[x_coords[a]]):
+                    marker_index = my_data4[x_coords[a]][sub_counter].index('-')
+                    my_data2[x_coords[a + counter]].append(str(my_data4[x_coords[a]][sub_counter][:marker_index] + "-" + my_data4[x_coords[a]][sub_counter][counter+1+marker_index:]))
+                    sub_counter+=1
+                sub_counter = 0
                 counter += 1
         counter = 0
-    for v in range(len(my_data2)):
-        SHORT_PROBABILITIES.append(list(itertools.chain.from_iterable(list(my_data2.values())[v])))
-        for a in range(len(SHORT_PROBABILITIES[v])):
-            my_data3[x_coords[v]].append(SHORT_PROBABILITIES[v][a])
-    x_coords = list(my_data3.keys())
+    #for v in range(len(my_data2)):
+    #    SHORT_PROBABILITIES.append(list(itertools.chain.from_iterable(list(my_data2.values())[v])))
+    #    for a in range(len(SHORT_PROBABILITIES[v])):
+    #        my_data3[x_coords[v]].append(SHORT_PROBABILITIES[v][a])
+    x_coords = list(my_data2.keys())
     x_coords.sort()
     y_coords = list()
     for x in x_coords:
-        y_coords.append(len(my_data3[x]))
+        y_coords.append(len(my_data2[x]))
 
     SHORT_PROBABILITIES.clear()
     counter = 0
@@ -157,56 +169,50 @@ def main():
         y_coords2.append(len(huffmandict2[x]))
     maxima = len(x_coords2)
     while counter3 < maxima:
-        MINIMUM_X.append(x_coords[counter3])
-        MINIMUM_Y.append(y_coords[counter3])
+        MINIMUM_X.append(x_coords2[counter3])
+        MINIMUM_Y.append(y_coords2[counter3])
         counter3 += 1
-    print(x_coords2)
-    print(MINIMUM_X)
-    print(MINIMUM_Y)
-    chromosomesort(my_data3, 0, x_coords, 0, 0, 0, 0, 0, 0, 0, 0)
-    highestprobability(startpos, 0, huffmandict2)
-    sumofaverage(huffmandict2, x_coords2, 0, startpos, 0, 0, 0)
-    harmonicmean(startpos, 0, 0, 0, 0, 0, 0)
+    chromosomesort(my_data2, 0, x_coords, 0, 0, 0, 0, 0, 0, 0, 0)
+    highestprobability(0, 0, huffmandict2)
+    sumofaverage(huffmandict2, x_coords2, 0, 0, 0, 0, 0)
+    harmonicmean(0, 0, 0, 0, 0, 0, 0)
     huffmanentropy(0, 0, 0)
     printcalculations(pertick, 0)
-    printplot(BOT_START, BOT_END, pertick, opath)
+    #printplot(BOT_START, BOT_END, pertick, opath)
     for printtrack in range(len(x_coords)):
         print("%-10d \t %-10f \t %-10f \t %-10f \t %-10f \t %-10f \t" % (x_coords[printtrack], hentropy[printtrack], Alist[printtrack], Clist[printtrack], Glist[printtrack], Tlist[printtrack]))
 
 
     #############################################################################
-def chromosomesort(my_data3, substringcounter, x_coords, subcounter, basecounter, substringposcounter, Atotal, Ctotal, Gtotal, Ttotal, wholetotal):
+def chromosomesort(my_data2, substringcounter, x_coords, subcounter, basecounter, substringposcounter, Atotal, Ctotal, Gtotal, Ttotal, wholetotal):
     chromosomeprob['A'] = list()
     chromosomeprob['C'] = list()
     chromosomeprob['G'] = list()
     chromosomeprob['T'] = list()
     for r in x_coords:
-        while subcounter < len(my_data3[x_coords[substringcounter]]):
-            substringpos = my_data3[x_coords[substringcounter]][subcounter].index('-')
-            while basecounter < len(my_data3[x_coords[substringcounter]][subcounter][1+substringpos:]):
-                currentbase = my_data3[x_coords[substringcounter]][subcounter][basecounter+1+substringpos:basecounter+2+substringpos]
-                if currentbase == "A":
-                    chromosomeprob['A'].append(float(my_data3[x_coords[substringcounter]][subcounter][:substringpos]))
-                    chromosomeprob['C'].append(0)
-                    chromosomeprob['G'].append(0)
-                    chromosomeprob['T'].append(0)
-                if currentbase == "C":
-                    chromosomeprob['A'].append(0)
-                    chromosomeprob['C'].append(float(my_data3[x_coords[substringcounter]][subcounter][:substringpos]))
-                    chromosomeprob['G'].append(0)
-                    chromosomeprob['T'].append(0)
-                if currentbase == "G":
-                    chromosomeprob['A'].append(0)
-                    chromosomeprob['C'].append(0)
-                    chromosomeprob['G'].append(float(my_data3[x_coords[substringcounter]][subcounter][:substringpos]))
-                    chromosomeprob['T'].append(0)
-                if currentbase == "T":
-                    chromosomeprob['A'].append(0)
-                    chromosomeprob['C'].append(0)
-                    chromosomeprob['G'].append(0)
-                    chromosomeprob['T'].append(float(my_data3[x_coords[substringcounter]][subcounter][:substringpos]))
-                basecounter+=1
-            basecounter = 0
+        while subcounter < len(my_data2[x_coords[substringcounter]]):
+            substringpos = my_data2[x_coords[substringcounter]][subcounter].index('-')
+            currentbase = my_data2[x_coords[substringcounter]][subcounter][1+substringpos:basecounter+2+substringpos]
+            if currentbase == "A":
+                chromosomeprob['A'].append(float(my_data2[x_coords[substringcounter]][subcounter][:substringpos]))
+                chromosomeprob['C'].append(0)
+                chromosomeprob['G'].append(0)
+                chromosomeprob['T'].append(0)
+            if currentbase == "C":
+                chromosomeprob['A'].append(0)
+                chromosomeprob['C'].append(float(my_data2[x_coords[substringcounter]][subcounter][:substringpos]))
+                chromosomeprob['G'].append(0)
+                chromosomeprob['T'].append(0)
+            if currentbase == "G":
+                chromosomeprob['A'].append(0)
+                chromosomeprob['C'].append(0)
+                chromosomeprob['G'].append(float(my_data2[x_coords[substringcounter]][subcounter][:substringpos]))
+                chromosomeprob['T'].append(0)
+            if currentbase == "T":
+                chromosomeprob['A'].append(0)
+                chromosomeprob['C'].append(0)
+                chromosomeprob['G'].append(0)
+                chromosomeprob['T'].append(float(my_data2[x_coords[substringcounter]][subcounter][:substringpos]))
             subcounter+=1
         chromosomepos[x_coords[substringcounter]] = copy.deepcopy(chromosomeprob)
         chromosomeprob['A'].clear()
@@ -230,6 +236,7 @@ def chromosomesort(my_data3, substringcounter, x_coords, subcounter, basecounter
 
 
 
+
 def highestprobability(startpositioncounter, highestprobabilitycounter, probabilitydict):
     for w in MINIMUM_X:
         highestprobarray.append(max(list(probabilitydict.values())[startpositioncounter]))
@@ -241,10 +248,10 @@ def highestprobability(startpositioncounter, highestprobabilitycounter, probabil
 
 def sumofaverage(probabilitydict2, x_coords, chromosomepositioncounter, startpositioncounter2, averagearraycounter,
                  numinaveragecounter, value_counter):
-    for x in probabilitydict2:
+    for x in range(len(probabilitydict2)):
         PROB_LIST.append(probabilitydict2[x_coords[chromosomepositioncounter]])
         chromosomepositioncounter += 1
-    for z in MINIMUM_X:
+    for z in range(len(MINIMUM_X)):
         average = sum(PROB_LIST[startpositioncounter2])
         length = len(PROB_LIST[startpositioncounter2])
         average = average / length
