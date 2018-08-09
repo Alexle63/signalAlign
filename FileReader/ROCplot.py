@@ -169,6 +169,9 @@ def main():
         print(counter5)
         counter5 = 0
         counter2 += 1
+    plt.title("ROC Entropy Plot")
+    plt.xlabel("Position Threshold")
+    plt.ylabel("Huffman Entropy")
     plt.scatter(huffman_x, hentropy)
     plt.show()
     numcounter = 0
