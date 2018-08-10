@@ -68,7 +68,6 @@ def main():
     tsvFilePaths = glob.glob(args.input + '/*.tsv')
     for x in tsvFilePaths:
         print(x)
-        print
     startpos = args.start_position
     rang = args.range
     pos = args.position
