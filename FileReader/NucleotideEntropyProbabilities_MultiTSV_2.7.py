@@ -42,16 +42,6 @@ Ttotal = []
 chromosomeholder = []
 chromosomepos = dict()
 chromosomeprob = dict()
-del my_data[:]
-del my_data2[:]
-del my_data3[:]
-del my_data4[:]
-del huffmandict[:]
-del huffmandict2[:]
-del x_coords[:]
-del y_coords[:]
-del x_coords2[:]
-del y_coords2[:]
 del SHORT_PROBABILITIES[:]
 
 def parse_args(args=None):
