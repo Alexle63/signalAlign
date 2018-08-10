@@ -224,7 +224,6 @@ def startup(startpos, rang, pos, opath, tsvfile):
     del Gtotal[:]
     del Ttotal[:]
     del chromosomeholder[:]
-    del chromosomepos[:]
     del chromosomeprob[:]
 
     #############################################################################
