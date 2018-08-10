@@ -55,7 +55,7 @@ def parse_args(args=None):
     parser.add_argument('--position', '-p', action='store',
                         required=False, type=str, default="reference",
                         help="index for which column for x axis. 1 = Reference positions, 5 = Event positions")
-    parser.add_argument('--output', '-o', action='store', required=False, type=str, default=None,
+    parser.add_argument('--output', '-o', action='store', required=True, type=str, default=None,
                         help="Path to output destination")
     parser.add_argument('--input', '-i', action='store', required=True, type=str, default=None,
                         help="Path to input file")
