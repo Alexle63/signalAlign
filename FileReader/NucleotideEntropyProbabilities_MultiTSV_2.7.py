@@ -66,7 +66,9 @@ def parse_args(args=None):
 def main():
     args = parse_args()
     tsvFilePaths = glob.glob(args.input + '/*.tsv')
-    print(tsvFilePaths)
+    for x in tsvFilePaths:
+        print(tsvFilePaths)
+        print
     startpos = args.start_position
     rang = args.range
     pos = args.position
@@ -224,7 +226,6 @@ def startup(startpos, rang, pos, opath, tsvfile):
     del Gtotal[:]
     del Ttotal[:]
     del chromosomeholder[:]
-    del chromosomeprob[:]
 
     #############################################################################
 def chromosomesort(my_data2, substringcounter, x_coords, subcounter, basecounter, substringposcounter, Atotal, Ctotal, Gtotal, Ttotal, wholetotal):
