@@ -41,7 +41,6 @@ Ttotal = []
 chromosomeholder = []
 chromosomepos = dict()
 chromosomeprob = dict()
-SHORT_PROBABILITIES.clear()
 def parse_args(args=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--start_position', '-s', action='store',
